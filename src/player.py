@@ -12,3 +12,6 @@ class Player:
     def draw(self, screen:pg.Surface):
         pg.draw.rect(screen, ct.PLAYER_COLOR, self.rect)
 
+    def move_up(self, screen:pg.Surface):
+        self.rect.move_ip()
+
