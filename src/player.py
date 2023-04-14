@@ -1,17 +1,52 @@
+from __future__ import annotations
 import constants as ct
 from constants import pygame as pg
+import typing as tp
 
 class Player:
-    rect:pg.Rect = pg.Rect((ct.PLAYER_X_START, ct.PLAYER_Y_START, ct.PLAYER_WIDTH, ct.PLAYER_WIDTH))
-    x:int = ct.PLAYER_X_START
-    y:int = ct.PLAYER_Y_START
+    _rect:pg.Rect
+    _color:tp.Tuple[int, int, int] 
+    _x_start:int
+    _y_start:int
+    _width:int
+    _height:int
+    _x_move:int
+    _y_move:int
 
-    def init(self):
-        return
+    def __init__(self, x_start:int, y_start:int, width:int, height:int, color:tp.Tuple[int, int, int]):
+        self._height = height
+        self._width = width
+        self._x_start = x_start
+        self._y_start = y_start
+        self._color = color
+        self._rect = pg.Rect((x_start, y_start, width, height))
     
     def draw(self, screen:pg.Surface):
-        pg.draw.rect(screen, ct.PLAYER_COLOR, self.rect)
+        pg.draw.rect(screen, self._color, self._rect)
 
-    def move_up(self, screen:pg.Surface):
-        self.rect.move_ip()
+    def move_left(self):
+        self._rect.move_ip(-self._x_move, 0)
+
+    def move_right(self):
+        self._rect.move_ip(self._x_move, 0)
+
+    def move_up(self):
+        self._rect.move_ip(0, self._y_move)
+
+    def move_down(self):
+        self._rect.move_ip(0, -self._y_move)
+
+    def reset(self):
+        self._rect.move_ip(self._x_start, self._y_start)
+
+    def width(self)-> int:
+        return self._width
+
+    def height(self)-> int:
+        return self._height
+
+    @staticmethod
+    def deafult() -> Player:
+        return Player(ct.PLAYER_X_START, ct.PLAYER_Y_START, ct.PLAYER_WIDTH, ct.PLAYER_HEIGHT, ct.PLAYER_COLOR)
+    
 
