@@ -11,7 +11,8 @@ class Game:
         self.player = Player.deafult()
 
     def draw(self):
-        self.screen.fill((0, 0, 0))
+        self.screen.fill((0, 0, 255))
+        # pg.draw.rect(self.screen, self.player.color, self.player.rect)
         self.player.draw(self.screen)
 
     def check_shortuts(self):
