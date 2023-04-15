@@ -1,6 +1,6 @@
 from __future__ import annotations
-import constants as ct
-from constants import pygame as pg
+import src.constants as ct
+from src.constants import pygame as pg
 import typing as tp
 
 class Player:
