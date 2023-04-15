@@ -13,12 +13,14 @@ class Player:
     _x_move:int
     _y_move:int
 
-    def __init__(self, x_start:int, y_start:int, width:int, height:int, color:tp.Tuple[int, int, int]):
+    def __init__(self, x_start:int, y_start:int, width:int, height:int, x_move:int, y_move:int, color:tp.Tuple[int, int, int]):
         self._height = height
         self._width = width
         self._x_start = x_start
         self._y_start = y_start
         self._color = color
+        self._x_move = x_move
+        self._y_move = y_move
         self._rect = pg.Rect((x_start, y_start, width, height))
     
     def draw(self, screen:pg.Surface):
@@ -47,6 +49,8 @@ class Player:
 
     @staticmethod
     def deafult() -> Player:
-        return Player(ct.PLAYER_X_START, ct.PLAYER_Y_START, ct.PLAYER_WIDTH, ct.PLAYER_HEIGHT, ct.PLAYER_COLOR)
-    
+        return Player(ct.PLAYER_X_START, ct.PLAYER_Y_START, 
+                      ct.PLAYER_WIDTH, ct.PLAYER_HEIGHT, 
+                      ct.PLAYER_X_MOVE, ct.PLAYER_Y_MOVE, 
+                      ct.PLAYER_COLOR)
 
