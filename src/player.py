@@ -1,10 +1,10 @@
 from __future__ import annotations
 import src.constants as ct
-from src.constants import pygame as pg
 import typing as tp
+import pygame
 
 class Player:
-    rect:pg.Rect
+    rect:pygame.Rect
     color:tp.Tuple[int, int, int] 
     x_start:int
     y_start:int
@@ -12,8 +12,10 @@ class Player:
     height:int
     x_move:int
     y_move:int
+    score:int
 
     def __init__(self, x_start:int, y_start:int, width:int, height:int, x_move:int, y_move:int, color:tp.Tuple[int, int, int]):
+        self.score = 0
         self.height = height
         self.width = width
         self.x_start = x_start
@@ -21,10 +23,10 @@ class Player:
         self.color = color
         self.x_move = x_move
         self.y_move = y_move
-        self.rect = pg.Rect((x_start, y_start, width, height))
+        self.rect = pygame.Rect((x_start, y_start, width, height))
     
-    def draw(self, screen:pg.Surface):
-        pg.draw.rect(screen, self.color, self.rect)
+    def draw(self, screen:pygame.Surface):
+        pygame.draw.rect(screen, self.color, self.rect)
 
     def move_left(self):
         self.rect.move_ip(-self.x_move, 0)
