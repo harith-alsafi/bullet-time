@@ -206,6 +206,10 @@ class Game:
     def run(self):
         run = True
         while run:
+            self.clock.tick(FPS)
+            self.elapsed_time = time.time() - self.start_time
+            self.draw_bg()
+            self.draw_ground()
             self.draw()
             self.check_shortuts()
             for event in pygame.event.get():
