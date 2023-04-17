@@ -8,7 +8,7 @@ import time
 import random
 
 class Game:
-    delimeter = '/'
+    delimeter = "\\"
     font:pygame.font.Font
     screen:pygame.Surface
 
