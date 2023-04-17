@@ -1,2 +1,15 @@
 # gravitate
 Game made with pygame
+
+
+
+
+
+
+
+
+
+#SPAWN LESS & SMALLER MARIOS
+#OTHER ANIMATIONS
+#ENDSCREEN
+#OBSTACLE DESTROYED

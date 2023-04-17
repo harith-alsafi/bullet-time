@@ -99,7 +99,7 @@ class Game:
         self.frame = 0
 
         for x in range(self.animation_steps):
-            self.animation_list.append(self.sprite_sheet.get_image(x , 24 , 24 , 4 , BLACK))
+            self.animation_list.append(self.sprite_sheet.get_image(x , 43, 24 , 4 , ORANGE))
 
         self.frame_hurt = self.sprite_sheet.get_image(3 , 24 , 24 , 4 , BLACK)
 
@@ -126,12 +126,10 @@ class Game:
 
     def init_buttons(self):
         # Load start and exit button images
-        self.start_img = self.load_img('start_btn.png').convert_alpha()
         self.exit_img = self.load_img('exit_btn.png').convert_alpha()
 
         # Create instances for start and exit buttons
-        self.start_button = Button(100, 15, self.start_img, 0.3)
-        self.exit_button = Button(200, 15, self.exit_img, 0.3)
+        self.exit_button = Button(20, 15, self.exit_img, 0.3)
 
     def init_player(self):
         # Define player rectangle
@@ -151,7 +149,7 @@ class Game:
         self.bg_images=[]
 
         # Append background images to the array
-        for i in range(1,6):
+        for i in range(1,4):
             bg_image = self.load_img(f"plx-{i}.png").convert_alpha()
             self.bg_images.append(bg_image)
             
@@ -169,13 +167,13 @@ class Game:
 
     # Define function to draw the ground
     def draw_ground(self):
-        for x in range(15):
+        for x in range(60):
             self.screen.blit(self.ground_image, ((x * self.ground_width) - self.scroll * 2.2, SCREEN_HEIGHT - self.ground_height))
 
     def init_obstacle(self):
         # Set up obstacles
         self.obstacle_image = self.load_img("spike.png").convert_alpha()
-
+        self.obstacle_done_image = self.load_img("spike_done.png").convert_alpha()
         self.num_obstacles = 5
         self.obstacle_width = 45
         self.obstacle_height = 30
@@ -211,10 +209,10 @@ class Game:
 
     # Set Up timer
     def draw(self, elapsed_time,score):
-        time_text = self.font.render(f"Time: {round(elapsed_time)}s",1,"white")
-        self.screen.blit(time_text,(1200,10))
-        score_text = self.font.render(f"Score: {round(score)} coins!",1,"white")
-        self.screen.blit(score_text,(800,10))
+        time_text = self.font.render(f"Time: {round(elapsed_time)}s",1,"black")
+        self.screen.blit(time_text,(900,10))
+        score_text = self.font.render(f"Coins: {round(score)}",1,"black")
+        self.screen.blit(score_text,(740,10))
 
         pygame.display.update()
 
@@ -246,9 +244,6 @@ class Game:
         self.draw_ground()
 
     def check_buttons(self):
-        # Check if the start button is pressed and print 'START' if it is
-        if self.start_button.draw(self.screen):
-            print('START')
 
         # Check if the exit button is pressed and print 'EXIT' if it is
         if self.exit_button.draw(self.screen):
@@ -291,7 +286,7 @@ class Game:
                 self.player_colour = RED   # replace with a sprite switch
                 self.player_health -= 20
                 print(self.player_health)
-                self.no_damage = self.timer
+                self.no_damage = self.timer # Damage cooldown (no damage for 3 seconds)
 
         # Check for collision with coin and increment player  score
         if self.player.collidelist(self.coins) >= 0:
