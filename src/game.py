@@ -36,7 +36,6 @@ class Game:
     exit_button:Button
 
     exit:bool
-    player_death:bool
 
     # Load background image and define the width and height of the ground image
     ground_image:pygame.Surface
@@ -239,6 +238,54 @@ class Game:
         self.clock.tick(FPS)
         self.elapsed_time = time.time() - self.start_time
 
+    def reset(self):
+        self.init()
+       
+
+    def draw_end_screen(self):
+        # Fill screen with black color
+        self.screen.fill((0, 0, 0))
+        end_screen_time = "%.2f" % round(self.elapsed_time, 2)
+        # Render game over text
+        game_over_text = self.font.render("Game Over", True, (255, 255, 255))
+        game_over_rect = game_over_text.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/4))
+        self.screen.blit(game_over_text, game_over_rect)
+
+        # Render final score text
+        score_text = self.font.render(f"Final Score: {self.player_score}", True, (255, 255, 255))
+        time_text = self.font.render(f"Your survival time is {end_screen_time} seconds", True, (255, 255, 255))
+
+        score_rect = score_text.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/3))
+        self.screen.blit(score_text, score_rect)
+
+        time_rect = time_text.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2.5))
+        self.screen.blit(time_text, time_rect)
+        
+        # Render retry button
+        retry_button_rect = pygame.Rect(0, 0, 200, 50)
+        retry_button_rect.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/1.5)
+        pygame.draw.rect(self.screen, (0, 255, 0), retry_button_rect)
+        retry_text = self.font.render("Retry", True, (0, 0, 0))
+        retry_text_rect = retry_text.get_rect(center=retry_button_rect.center)
+        self.screen.blit(retry_text, retry_text_rect)
+
+        # Update display
+        pygame.display.flip()
+
+        # Wait for retry button to be clicked
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    self.run = False
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if retry_button_rect.collidepoint(event.pos):
+                        # Reset game and return to main loop
+                        self.reset()
+                        return
+
+
+
     def draw_enviroment(self):
         self.draw_bg()
         self.draw_ground()
@@ -357,6 +404,10 @@ class Game:
             if self.player.y < 340:
                 self.player.move_ip(0, 5)
 
+        #insta kill debug
+        elif self.key[pygame.K_q]: 
+            self.player_death = True
+
         # Move the obstacles to the left by the value of obstacles_x
         self.scroll += 5
         self.obstacles_x = -self.speed
@@ -371,9 +422,12 @@ class Game:
     
     def finalize_run(self):
         # Quit the game if the exit button is pressed or if the player dies
-        if self.exit or self.player_death:
+        if self.exit:
             pygame.quit()
 
+        if self.player_death:
+            self.player_health = 100
+            self.draw_end_screen()
         # Update the display to show the changes made to the screen
         pygame.display.update()
 
