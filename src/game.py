@@ -1,4 +1,3 @@
-from src.player import Player
 from src.constants import *
 from src.spritesheet import SpriteSheet
 from src.button import Button
@@ -383,7 +382,7 @@ class Game:
         # Update the display to show the changes made to the screen
         pygame.display.update()
 
-    def run(self):
+    def run_game(self):
         self.run = True
         while self.run:
             self.run_time()
