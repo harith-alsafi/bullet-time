@@ -162,7 +162,7 @@ class Game:
             speed = 1
             for i in self.bg_images:
                 self.screen.blit(i, ((x * self.bg_width) - self.scroll * speed, 0))
-                speed += 0.2
+                speed += 0.1
 
     # Define function to draw the ground
     def draw_ground(self):
@@ -305,9 +305,12 @@ class Game:
 
 
     def check_scroll(self):
-        # Reset the value of scroll to 0 if its absolute value is greater than the width of the background image
-        if abs(self.scroll) > (self.bg_width):
-            self.scroll = 0
+    # Increment the value of scroll by a small amount each frame
+     self.scroll += 1
+
+    # Reset the value of scroll to 0 if its absolute value is greater than the width of the background image
+     if abs(self.scroll) > self.bg_width:
+        self.scroll = 0
 
     def update_animation(self):
         self.current_time = pygame.time.get_ticks()
@@ -327,7 +330,7 @@ class Game:
 
     def check_collision(self):
         # Check for collision with obstacles and decrement the player's health if there is a collision
-        if (self.timer - self.no_damage > 3):
+        if (self.timer - self.no_damage > 0.2):
             if self.player.collidelist(self.obstacles) >= 0:
                 print(self.player_health)
                 self.player_colour = RED   # replace with a sprite switch
@@ -335,9 +338,11 @@ class Game:
                 print(self.player_health)
                 self.no_damage = self.timer # Damage cooldown (no damage for 3 seconds)
 
-        # Check for collision with coin and increment player  score
-        if self.player.collidelist(self.coins) >= 0:
-            self.player_score += 1
+        # Check for collision with coins and increment player score
+        for i, coin in enumerate(self.coins):
+           if self.player.colliderect(coin):
+               self.coins.pop(i)
+               self.player_score += 1
 
     def draw_obstacle(self):
         # Draw obstacles
@@ -364,7 +369,7 @@ class Game:
             else:
                 # Generate a new obstacle
                 x = SCREEN_WIDTH
-                y = random.randint(0, SCREEN_HEIGHT - self.obstacle_height)
+                y = random.randint(PLAYER_HEIGHT, SCREEN_HEIGHT - self.obstacle_height - GROUND_HEIGHT)
                 new_obstacle = pygame.Rect(x, y, self.obstacle_width, self.obstacle_height)
                 self.new_obstacles.append(new_obstacle)
 
@@ -386,7 +391,7 @@ class Game:
                 else:
                     # Generate a new coin
                     x = SCREEN_WIDTH
-                    y = random.randint(0, SCREEN_HEIGHT - self.coin_height)
+                    y = random.randint(PLAYER_HEIGHT, SCREEN_HEIGHT - self.coin_height - GROUND_HEIGHT)
                     new_coin = pygame.Rect(x, y, self.coin_width, self.coin_height)
                     self.new_coins.append(new_coin)
 
